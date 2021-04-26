@@ -9,11 +9,10 @@
 /* Begin PBXBuildFile section */
 		47A36B2C263731B800D30F47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B2B263731B800D30F47 /* AppDelegate.swift */; };
 		47A36B2E263731B800D30F47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B2D263731B800D30F47 /* SceneDelegate.swift */; };
-		47A36B30263731B800D30F47 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B2F263731B800D30F47 /* ViewController.swift */; };
-		47A36B33263731B800D30F47 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47A36B31263731B800D30F47 /* Main.storyboard */; };
 		47A36B35263731BA00D30F47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47A36B34263731BA00D30F47 /* Assets.xcassets */; };
 		47A36B38263731BA00D30F47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47A36B36263731BA00D30F47 /* LaunchScreen.storyboard */; };
 		47A36B462637473700D30F47 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B452637473700D30F47 /* OpenCVWrapper.mm */; };
+		47A36B522637575B00D30F47 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B512637575B00D30F47 /* ContentView.swift */; };
 		E1E226F7DD40DA661C44E89E /* Pods_OpenCVFeatureMatcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */; };
 /* End PBXBuildFile section */
 
@@ -21,8 +20,6 @@
 		47A36B28263731B800D30F47 /* OpenCVFeatureMatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVFeatureMatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47A36B2B263731B800D30F47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47A36B2D263731B800D30F47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		47A36B2F263731B800D30F47 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		47A36B32263731B800D30F47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		47A36B34263731BA00D30F47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A36B37263731BA00D30F47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		47A36B39263731BA00D30F47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -30,6 +27,7 @@
 		47A36B442637473700D30F47 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
 		47A36B452637473700D30F47 /* OpenCVWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVWrapper.mm; sourceTree = "<group>"; };
 		47A36B492637499A00D30F47 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		47A36B512637575B00D30F47 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4F4AE74D322EBA1449BA1B42 /* Pods-OpenCVFeatureMatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVFeatureMatcher.release.xcconfig"; path = "Target Support Files/Pods-OpenCVFeatureMatcher/Pods-OpenCVFeatureMatcher.release.xcconfig"; sourceTree = "<group>"; };
 		D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenCVFeatureMatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D579F7C9A5B6D50B0DE08E0B /* Pods-OpenCVFeatureMatcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVFeatureMatcher.debug.xcconfig"; path = "Target Support Files/Pods-OpenCVFeatureMatcher/Pods-OpenCVFeatureMatcher.debug.xcconfig"; sourceTree = "<group>"; };
@@ -70,8 +68,6 @@
 			children = (
 				47A36B2B263731B800D30F47 /* AppDelegate.swift */,
 				47A36B2D263731B800D30F47 /* SceneDelegate.swift */,
-				47A36B2F263731B800D30F47 /* ViewController.swift */,
-				47A36B31263731B800D30F47 /* Main.storyboard */,
 				47A36B34263731BA00D30F47 /* Assets.xcassets */,
 				47A36B36263731BA00D30F47 /* LaunchScreen.storyboard */,
 				47A36B39263731BA00D30F47 /* Info.plist */,
@@ -79,6 +75,7 @@
 				47A36B452637473700D30F47 /* OpenCVWrapper.mm */,
 				47A36B432637473600D30F47 /* OpenCVFeatureMatcher-Bridging-Header.h */,
 				47A36B492637499A00D30F47 /* PrefixHeader.pch */,
+				47A36B512637575B00D30F47 /* ContentView.swift */,
 			);
 			path = OpenCVFeatureMatcher;
 			sourceTree = "<group>";
@@ -161,7 +158,6 @@
 			files = (
 				47A36B38263731BA00D30F47 /* LaunchScreen.storyboard in Resources */,
 				47A36B35263731BA00D30F47 /* Assets.xcassets in Resources */,
-				47A36B33263731B800D30F47 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,9 +193,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47A36B30263731B800D30F47 /* ViewController.swift in Sources */,
 				47A36B2C263731B800D30F47 /* AppDelegate.swift in Sources */,
 				47A36B462637473700D30F47 /* OpenCVWrapper.mm in Sources */,
+				47A36B522637575B00D30F47 /* ContentView.swift in Sources */,
 				47A36B2E263731B800D30F47 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,14 +203,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		47A36B31263731B800D30F47 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				47A36B32263731B800D30F47 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		47A36B36263731BA00D30F47 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
