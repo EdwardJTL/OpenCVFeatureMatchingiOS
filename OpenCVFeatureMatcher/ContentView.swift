@@ -9,7 +9,18 @@ import Foundation
 import SwiftUI
 
 struct ContentView: View {
+    @State var image = Image("cat")
+
     var body: some View {
-        Text("Hello!")
+        VStack {
+            image
+                .resizable()
+                .scaledToFit()
+            Button("Change to gray") {
+                let grayImage = OpenCVWrapper.toGray(UIImage(named: "cat")!)
+                image = Image(uiImage: grayImage)
+            }
+        }
+        .padding()
     }
 }
