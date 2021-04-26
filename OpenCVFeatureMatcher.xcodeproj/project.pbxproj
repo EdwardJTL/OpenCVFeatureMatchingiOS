@@ -13,6 +13,8 @@
 		47A36B33263731B800D30F47 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47A36B31263731B800D30F47 /* Main.storyboard */; };
 		47A36B35263731BA00D30F47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47A36B34263731BA00D30F47 /* Assets.xcassets */; };
 		47A36B38263731BA00D30F47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47A36B36263731BA00D30F47 /* LaunchScreen.storyboard */; };
+		47A36B462637473700D30F47 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B452637473700D30F47 /* OpenCVWrapper.mm */; };
+		E1E226F7DD40DA661C44E89E /* Pods_OpenCVFeatureMatcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,13 @@
 		47A36B34263731BA00D30F47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47A36B37263731BA00D30F47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		47A36B39263731BA00D30F47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		47A36B432637473600D30F47 /* OpenCVFeatureMatcher-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenCVFeatureMatcher-Bridging-Header.h"; sourceTree = "<group>"; };
+		47A36B442637473700D30F47 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
+		47A36B452637473700D30F47 /* OpenCVWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVWrapper.mm; sourceTree = "<group>"; };
+		47A36B492637499A00D30F47 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		4F4AE74D322EBA1449BA1B42 /* Pods-OpenCVFeatureMatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVFeatureMatcher.release.xcconfig"; path = "Target Support Files/Pods-OpenCVFeatureMatcher/Pods-OpenCVFeatureMatcher.release.xcconfig"; sourceTree = "<group>"; };
+		D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenCVFeatureMatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D579F7C9A5B6D50B0DE08E0B /* Pods-OpenCVFeatureMatcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVFeatureMatcher.debug.xcconfig"; path = "Target Support Files/Pods-OpenCVFeatureMatcher/Pods-OpenCVFeatureMatcher.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1E226F7DD40DA661C44E89E /* Pods_OpenCVFeatureMatcher.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +52,8 @@
 			children = (
 				47A36B2A263731B800D30F47 /* OpenCVFeatureMatcher */,
 				47A36B29263731B800D30F47 /* Products */,
+				EF8191EC4CBB379A5AB515F1 /* Pods */,
+				B8CF26C8A4004E3501E45D8A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,8 +75,29 @@
 				47A36B34263731BA00D30F47 /* Assets.xcassets */,
 				47A36B36263731BA00D30F47 /* LaunchScreen.storyboard */,
 				47A36B39263731BA00D30F47 /* Info.plist */,
+				47A36B442637473700D30F47 /* OpenCVWrapper.h */,
+				47A36B452637473700D30F47 /* OpenCVWrapper.mm */,
+				47A36B432637473600D30F47 /* OpenCVFeatureMatcher-Bridging-Header.h */,
+				47A36B492637499A00D30F47 /* PrefixHeader.pch */,
 			);
 			path = OpenCVFeatureMatcher;
+			sourceTree = "<group>";
+		};
+		B8CF26C8A4004E3501E45D8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EF8191EC4CBB379A5AB515F1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D579F7C9A5B6D50B0DE08E0B /* Pods-OpenCVFeatureMatcher.debug.xcconfig */,
+				4F4AE74D322EBA1449BA1B42 /* Pods-OpenCVFeatureMatcher.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,6 +107,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 47A36B3C263731BA00D30F47 /* Build configuration list for PBXNativeTarget "OpenCVFeatureMatcher" */;
 			buildPhases = (
+				05685689CB6DF6C883C0E7A3 /* [CP] Check Pods Manifest.lock */,
 				47A36B24263731B800D30F47 /* Sources */,
 				47A36B25263731B800D30F47 /* Frameworks */,
 				47A36B26263731B800D30F47 /* Resources */,
@@ -98,6 +132,7 @@
 				TargetAttributes = {
 					47A36B27263731B800D30F47 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -132,6 +167,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		05685689CB6DF6C883C0E7A3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OpenCVFeatureMatcher-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		47A36B24263731B800D30F47 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -139,6 +199,7 @@
 			files = (
 				47A36B30263731B800D30F47 /* ViewController.swift in Sources */,
 				47A36B2C263731B800D30F47 /* AppDelegate.swift in Sources */,
+				47A36B462637473700D30F47 /* OpenCVWrapper.mm in Sources */,
 				47A36B2E263731B800D30F47 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,11 +344,14 @@
 		};
 		47A36B3D263731BA00D30F47 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D579F7C9A5B6D50B0DE08E0B /* Pods-OpenCVFeatureMatcher.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24ZN9BF5KJ;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenCVFeatureMatcher/PrefixHeader.pch";
 				INFOPLIST_FILE = OpenCVFeatureMatcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -295,6 +359,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edwardl.OpenCVFeatureMatcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "OpenCVFeatureMatcher/OpenCVFeatureMatcher-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -302,11 +368,14 @@
 		};
 		47A36B3E263731BA00D30F47 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F4AE74D322EBA1449BA1B42 /* Pods-OpenCVFeatureMatcher.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24ZN9BF5KJ;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenCVFeatureMatcher/PrefixHeader.pch";
 				INFOPLIST_FILE = OpenCVFeatureMatcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -314,6 +383,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.edwardl.OpenCVFeatureMatcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "OpenCVFeatureMatcher/OpenCVFeatureMatcher-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
