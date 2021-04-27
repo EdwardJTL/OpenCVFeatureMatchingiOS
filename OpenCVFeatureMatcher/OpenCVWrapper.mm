@@ -9,6 +9,8 @@
 
 #import <opencv2/opencv.hpp>
 
+#import "CppHelpers.hpp"
+
 using namespace std;
 
 using namespace cv;
@@ -31,6 +33,12 @@ using namespace cv;
     return [OpenCVWrapper _imageFrom:[OpenCVWrapper _computeFeatures:[OpenCVWrapper _matFrom:source]]];
 }
 
++ (UIImage *)toMatchedImage:(UIImage *)train and:(UIImage *)query {
+    cout << "OpenCV: ";
+    Mat trainGray = [OpenCVWrapper _matFrom:train];
+    Mat queryGray = [OpenCVWrapper _matFrom:query];
+    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeatures:trainGray and:queryGray]];
+}
 
 #pragma mark Private
 
@@ -92,6 +100,30 @@ using namespace cv;
     orb->detectAndCompute(image, noArray(), keypoints, descriptors);
     Mat keypointImage;
     cv::drawKeypoints(image, keypoints, keypointImage);
+    cout << keypoints.size();
     return keypointImage;
 }
+
++ (Mat)_compareFeatures:(Mat)image and:(Mat)image2 {
+    cout << "-> Compare keypoints ->";
+    cv::Ptr<ORB> orb = ORB::create();
+    vector<KeyPoint> keypoints1 = vector<KeyPoint>();
+    Mat descriptors1;
+    vector<KeyPoint> keypoints2 = vector<KeyPoint>();
+    Mat descriptors2;
+    orb->detectAndCompute(image, noArray(), keypoints1, descriptors1);
+    orb->detectAndCompute(image2, noArray(), keypoints2, descriptors2);
+    cout << " image 1 keypoints count " << keypoints1.size() << " ->";
+    cout << " image 2 keypoints count " << keypoints2.size() << " ->";
+    cv::Ptr<BFMatcher> bf = cv::BFMatcher::create(cv::NORM_HAMMING, true);
+    vector<DMatch> matches = vector<DMatch>();
+    bf->match(descriptors2, descriptors1, matches);
+    cout << " matches count " << matches.size() << " ->";
+    sort(matches.begin(), matches.end(), CppHelpers::compareMatch);
+
+    Mat result;
+    cv::drawMatches(image, keypoints1, image2, keypoints2, matches, result);
+    return result;
+}
+
 @end

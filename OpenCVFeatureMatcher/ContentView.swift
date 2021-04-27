@@ -14,7 +14,6 @@ struct ContentView: View {
     @State var image2 = UIImage()
 
     @State var pickingFirst = true
-    @State var showingSecond = false
 
     var body: some View {
         NavigationView {
@@ -22,7 +21,6 @@ struct ContentView: View {
                 firstScreen
                 NavigationLink(
                     destination: secondScreen,
-                    isActive: $showingSecond,
                     label: {
                         Text("Process images")
                     })
@@ -83,15 +81,11 @@ struct ContentView: View {
 
     var secondScreen: some View {
         VStack {
-            ProcessedImageView(image)
-            ProcessedImageView(image2)
-
-            Divider()
-            Button(action: {
-                showingSecond = false
-            }, label: {
-                Text("Back")
-            })
+//            HStack {
+//                ProcessedImageView(image)
+//                ProcessedImageView(image2)
+//            }
+            CompareImagesView(source: image, query: image2)
         }
     }
 }
@@ -110,5 +104,27 @@ struct ProcessedImageView: View {
             .onAppear(perform: {
                 image = OpenCVWrapper.toKeypointImage(image)
             })
+    }
+}
+
+
+struct CompareImagesView: View {
+    @State var image = UIImage()
+    @State var source: UIImage
+    @State var query: UIImage
+
+    init(source: UIImage, query: UIImage) {
+        self._source = State<UIImage>(initialValue: source)
+        self._query = State<UIImage>(initialValue: query)
+    }
+
+    var body: some View {
+        Image(uiImage: image)
+            .resizable()
+            .scaledToFit()
+            .onAppear(perform: {
+                image = OpenCVWrapper.toMatchedImage(source, and: query)
+            })
+
     }
 }

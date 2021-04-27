@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OpenCVWrapper : NSObject
 + (UIImage *)toGray:(UIImage *)source;
 + (UIImage *)toKeypointImage:(UIImage *)source;
++ (UIImage *)toMatchedImage:(UIImage *)train and:(UIImage *)query;
 @end
 
 NS_ASSUME_NONNULL_END
