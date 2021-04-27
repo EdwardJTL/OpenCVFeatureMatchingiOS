@@ -40,6 +40,13 @@ using namespace cv;
     return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeatures:trainGray and:queryGray]];
 }
 
++ (void)computeHomography:(UIImage *)train to:(UIImage *)query {
+    cout << "OpenCV: ";
+    Mat trainGray = [OpenCVWrapper _matFrom:train];
+    Mat queryGray = [OpenCVWrapper _matFrom:query];
+    Mat homography = [OpenCVWrapper _findHomography:trainGray to:queryGray];
+}
+
 #pragma mark Private
 
 + (Mat)_grayFrom:(Mat)source {
@@ -124,6 +131,43 @@ using namespace cv;
     Mat result;
     cv::drawMatches(image, keypoints1, image2, keypoints2, matches, result);
     return result;
+}
+
++ (Mat)_findHomography:(Mat)image to:(Mat)image2 {
+    cout << "-> find homography ->";
+    cv::Ptr<ORB> orb = ORB::create();
+    vector<KeyPoint> keypoints1 = vector<KeyPoint>();
+    Mat descriptors1;
+    vector<KeyPoint> keypoints2 = vector<KeyPoint>();
+    Mat descriptors2;
+    orb->detectAndCompute(image, noArray(), keypoints1, descriptors1);
+    orb->detectAndCompute(image2, noArray(), keypoints2, descriptors2);
+    cout << " image 1 keypoints count " << keypoints1.size() << " ->";
+    cout << " image 2 keypoints count " << keypoints2.size() << " ->";
+    cv::Ptr<BFMatcher> bf = cv::BFMatcher::create(cv::NORM_HAMMING, true);
+    vector<DMatch> matches = vector<DMatch>();
+    bf->match(descriptors2, descriptors1, matches);
+    cout << " matches count " << matches.size() << " ->";
+    sort(matches.begin(), matches.end(), CppHelpers::compareMatch);
+
+    vector<Point2f> points1 = vector<Point2f>();
+    vector<Point2f> points2 = vector<Point2f>();
+
+    for (size_t i = 0; i < matches.size(); i++) {
+        points1.push_back(keypoints1[matches[i].trainIdx].pt);
+        points2.push_back(keypoints2[matches[i].queryIdx].pt);
+    }
+
+    Mat homographyMask;
+    Mat homography = cv::findHomography(points1, points2, cv::RANSAC, 3, homographyMask);
+
+    cout << "Matrix H = " << endl << homography << endl << "Matrix is valid? " << [OpenCVWrapper _validateHomography:homography] << endl;
+
+    return homography;
+}
+
++ (bool)_validateHomography:(Mat)h {
+    return CppHelpers::validateHomography(h);
 }
 
 @end

@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)toGray:(UIImage *)source;
 + (UIImage *)toKeypointImage:(UIImage *)source;
 + (UIImage *)toMatchedImage:(UIImage *)train and:(UIImage *)query;
++ (void)computeHomography:(UIImage *)train to:(UIImage *)query;
 @end
 
 NS_ASSUME_NONNULL_END

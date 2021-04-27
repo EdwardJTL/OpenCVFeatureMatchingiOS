@@ -124,6 +124,7 @@ struct CompareImagesView: View {
             .scaledToFit()
             .onAppear(perform: {
                 image = OpenCVWrapper.toMatchedImage(source, and: query)
+                OpenCVWrapper.computeHomography(source, to: query)
             })
 
     }

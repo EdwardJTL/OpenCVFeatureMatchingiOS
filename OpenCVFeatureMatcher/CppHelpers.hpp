@@ -10,11 +10,13 @@
 
 #include <stdio.h>
 #include <vector>
+#include <math.h>
 
 #include <opencv2/opencv.hpp>
 
 namespace CppHelpers {
 bool compareMatch(cv::DMatch & i, cv::DMatch & j);
+bool validateHomography(cv::Mat & h);
 }
 
 #endif /* CppHelpers_hpp */
