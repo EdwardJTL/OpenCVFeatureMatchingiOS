@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showPhotoLibrary = false
-    @State var image = UIImage()
-    @State var image2 = UIImage()
 
-    @State var pickingFirst = true
+    @ObservedObject var viewModel: ImageCompareViewModel
+
+    @State var pickingFirst = false
+    @State var pickingSecond = false
 
     var body: some View {
         NavigationView {
@@ -30,10 +30,10 @@ struct ContentView: View {
 
     var firstScreen: some View {
         VStack {
-            Image(uiImage: image)
+            Image(uiImage: viewModel.displayedImage1)
                 .resizable()
                 .scaledToFit()
-            Image(uiImage: image2)
+            Image(uiImage: viewModel.displayedImage2)
                 .resizable()
                 .scaledToFit()
 
@@ -41,7 +41,6 @@ struct ContentView: View {
 
             Button(action: {
                 pickingFirst = true
-                self.showPhotoLibrary.toggle()
             }, label: {
                 HStack {
                     Image(systemName: "photo")
@@ -53,9 +52,11 @@ struct ContentView: View {
                 .padding()
                 .background(Capsule().foregroundColor(.blue))
             })
+            .sheet(isPresented: $pickingFirst, content: {
+                ImagePicker(sourceType: .photoLibrary, selectedImage: $viewModel.sourceImage1)
+            })
             Button(action: {
-                pickingFirst = false
-                self.showPhotoLibrary.toggle()
+                pickingSecond = true
             }, label: {
                 HStack {
                     Image(systemName: "photo")
@@ -67,65 +68,19 @@ struct ContentView: View {
                 .padding()
                 .background(Capsule().foregroundColor(.blue))
             })
+            .sheet(isPresented: $pickingSecond, content: {
+                ImagePicker(sourceType: .photoLibrary, selectedImage: $viewModel.sourceImage2)
+            })
             Divider()
         }
         .padding()
-        .sheet(isPresented: $showPhotoLibrary) {
-            if pickingFirst {
-                ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
-            } else {
-                ImagePicker(sourceType: .photoLibrary, selectedImage: $image2)
-            }
-        }
     }
 
     var secondScreen: some View {
         VStack {
-//            HStack {
-//                ProcessedImageView(image)
-//                ProcessedImageView(image2)
-//            }
-            CompareImagesView(source: image, query: image2)
+            Image(uiImage: viewModel.processedResult)
+                .resizable()
+                .scaledToFit()
         }
-    }
-}
-
-struct ProcessedImageView: View {
-    @State var image: UIImage
-
-    init(_ image: UIImage) {
-        self._image = State<UIImage>(initialValue: image)
-    }
-
-    var body: some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-            .onAppear(perform: {
-                image = OpenCVWrapper.toKeypointImage(image)
-            })
-    }
-}
-
-
-struct CompareImagesView: View {
-    @State var image = UIImage()
-    @State var source: UIImage
-    @State var query: UIImage
-
-    init(source: UIImage, query: UIImage) {
-        self._source = State<UIImage>(initialValue: source)
-        self._query = State<UIImage>(initialValue: query)
-    }
-
-    var body: some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-            .onAppear(perform: {
-                image = OpenCVWrapper.toMatchedImage(source, and: query)
-                OpenCVWrapper.computeHomography(source, to: query)
-            })
-
     }
 }

@@ -15,6 +15,7 @@
 		47A36B522637575B00D30F47 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B512637575B00D30F47 /* ContentView.swift */; };
 		47A36B5B263793F400D30F47 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B5A263793F400D30F47 /* ImagePicker.swift */; };
 		47A36B5F26385F3800D30F47 /* CppHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B5D26385F3800D30F47 /* CppHelpers.cpp */; };
+		47A36B622638A78D00D30F47 /* ImageCompareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A36B612638A78D00D30F47 /* ImageCompareViewModel.swift */; };
 		E1E226F7DD40DA661C44E89E /* Pods_OpenCVFeatureMatcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		47A36B5A263793F400D30F47 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		47A36B5D26385F3800D30F47 /* CppHelpers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CppHelpers.cpp; sourceTree = "<group>"; };
 		47A36B5E26385F3800D30F47 /* CppHelpers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CppHelpers.hpp; sourceTree = "<group>"; };
+		47A36B612638A78D00D30F47 /* ImageCompareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompareViewModel.swift; sourceTree = "<group>"; };
 		4F4AE74D322EBA1449BA1B42 /* Pods-OpenCVFeatureMatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVFeatureMatcher.release.xcconfig"; path = "Target Support Files/Pods-OpenCVFeatureMatcher/Pods-OpenCVFeatureMatcher.release.xcconfig"; sourceTree = "<group>"; };
 		D2A43E5D67E90E05A389D9A6 /* Pods_OpenCVFeatureMatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenCVFeatureMatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D579F7C9A5B6D50B0DE08E0B /* Pods-OpenCVFeatureMatcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenCVFeatureMatcher.debug.xcconfig"; path = "Target Support Files/Pods-OpenCVFeatureMatcher/Pods-OpenCVFeatureMatcher.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				47A36B432637473600D30F47 /* OpenCVFeatureMatcher-Bridging-Header.h */,
 				47A36B492637499A00D30F47 /* PrefixHeader.pch */,
 				47A36B512637575B00D30F47 /* ContentView.swift */,
+				47A36B612638A78D00D30F47 /* ImageCompareViewModel.swift */,
 				47A36B5A263793F400D30F47 /* ImagePicker.swift */,
 				47A36B5D26385F3800D30F47 /* CppHelpers.cpp */,
 				47A36B5E26385F3800D30F47 /* CppHelpers.hpp */,
@@ -206,6 +209,7 @@
 				47A36B462637473700D30F47 /* OpenCVWrapper.mm in Sources */,
 				47A36B5B263793F400D30F47 /* ImagePicker.swift in Sources */,
 				47A36B522637575B00D30F47 /* ContentView.swift in Sources */,
+				47A36B622638A78D00D30F47 /* ImageCompareViewModel.swift in Sources */,
 				47A36B2E263731B800D30F47 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
