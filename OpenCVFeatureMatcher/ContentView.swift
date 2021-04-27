@@ -20,6 +20,10 @@ struct ContentView: View {
                 let grayImage = OpenCVWrapper.toGray(UIImage(named: "cat")!)
                 image = Image(uiImage: grayImage)
             }
+            Button("Change to keypoint") {
+                let kptImage = OpenCVWrapper.toKeypointImage(UIImage(named: "cat")!)
+                image = Image(uiImage: kptImage)
+            }
         }
         .padding()
     }

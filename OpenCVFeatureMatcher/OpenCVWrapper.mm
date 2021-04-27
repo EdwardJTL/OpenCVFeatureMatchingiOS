@@ -26,6 +26,11 @@ using namespace cv;
     return [OpenCVWrapper _imageFrom:[OpenCVWrapper _grayFrom:[OpenCVWrapper _matFrom:source]]];
 }
 
++ (UIImage *)toKeypointImage:(UIImage *)source {
+    cout << "OpenCV: ";
+    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _computeFeatures:[OpenCVWrapper _matFrom:source]]];
+}
+
 
 #pragma mark Private
 
@@ -77,5 +82,16 @@ using namespace cv;
     CGColorSpaceRelease(colorSpace);
 
     return result;
+}
+
++ (Mat)_computeFeatures:(Mat)image {
+    cout << "-> Keypoints ->";
+    cv::Ptr<ORB> orb = ORB::create();
+    vector<KeyPoint> keypoints = vector<KeyPoint>();
+    Mat descriptors;
+    orb->detectAndCompute(image, noArray(), keypoints, descriptors);
+    Mat keypointImage;
+    cv::drawKeypoints(image, keypoints, keypointImage);
+    return keypointImage;
 }
 @end
