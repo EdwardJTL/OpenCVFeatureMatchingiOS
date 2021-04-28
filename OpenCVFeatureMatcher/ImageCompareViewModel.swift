@@ -17,7 +17,7 @@ private func computeMatchedImages(_ image1: UIImage, _ image2: UIImage) -> UIIma
     return result
 }
 
-private func computerHomography(_ image1: UIImage, _ image2: UIImage) -> simd_float3x3{
+private func computeHomography(_ image1: UIImage, _ image2: UIImage) -> simd_float3x3{
     return OpenCVWrapper.computeHomographyKNNKaze(image1, to: image2)
 }
 
@@ -44,7 +44,7 @@ class ImageCompareViewModel: ObservableObject {
         Publishers.CombineLatest($sourceImage1.dropFirst(), $sourceImage2.dropFirst())
             .receive(on: DispatchQueue.global(qos: .utility))
             .map { image1, image2 -> simd_float3x3 in
-                computerHomography(image1, image2)
+                computeHomography(image1, image2)
             }
             .map { matrix -> String in
                 "\(matrix.columns.0.x)"

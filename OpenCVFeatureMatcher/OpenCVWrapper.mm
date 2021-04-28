@@ -67,7 +67,9 @@ using namespace cv;
 
 + (bool)validateHomography:(simd_float3x3)h {
     Mat hMat = [OpenCVWrapper _matFromSimd:h];
-    return [OpenCVWrapper _validateHomography:hMat];
+    bool matrixValid = [OpenCVWrapper _validateHomography:hMat];
+    bool transformValid = [OpenCVWrapper _validateHomographyWithBox:hMat];
+    return matrixValid && transformValid;
 }
 
 #pragma mark Private
@@ -152,7 +154,7 @@ using namespace cv;
     sort(matches.begin(), matches.end(), CppHelpers::compareMatch);
 
     Mat result;
-    cv::drawMatches(image, keypoints1, image2, keypoints2, matches, result);
+    cv::drawMatches(image2, keypoints2, image, keypoints1, matches, result);
     return result;
 }
 
@@ -191,7 +193,7 @@ using namespace cv;
     sort(goodMatches.begin(), goodMatches.end(), CppHelpers::compareMatch);
 
     Mat result;
-    cv::drawMatches(image, keypoints1, image2, keypoints2, goodMatches, result);
+    cv::drawMatches(image2, keypoints2, image, keypoints1, goodMatches, result);
     return result;
 }
 
@@ -227,10 +229,12 @@ using namespace cv;
     auto stop = std::chrono::high_resolution_clock::now();
     cout << "time: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << " ";
     cout << " good matches count " << goodMatches.size() << " ->";
-    goodMatches.resize(50);
+    if (goodMatches.size() > 50) {
+        goodMatches.resize(50);
+    }
 
     Mat result;
-    cv::drawMatches(image, keypoints1, image2, keypoints2, goodMatches, result);
+    cv::drawMatches(image2, keypoints2, image, keypoints1, goodMatches, result);
     return result;
 }
 
@@ -299,7 +303,9 @@ using namespace cv;
     auto stop = std::chrono::high_resolution_clock::now();
     cout << "time: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << " ";
     cout << " good matches count " << goodMatches.size() << " ->";
-    goodMatches.resize(50);
+    if (goodMatches.size() > 50) {
+        goodMatches.resize(50);
+    }
 
     vector<Point2f> points1 = vector<Point2f>();
     vector<Point2f> points2 = vector<Point2f>();
@@ -312,13 +318,27 @@ using namespace cv;
     Mat homographyMask;
     Mat homography = cv::findHomography(points1, points2, cv::RANSAC, 3, homographyMask);
 
-    cout << "Matrix H = " << endl << homography << endl << "Matrix is valid? " << [OpenCVWrapper _validateHomography:homography] << endl;
+    cout << "Matrix H = " << endl << homography << endl;
+    cout << "Matrix is valid? " << [OpenCVWrapper _validateHomography:homography] << endl;
+    cout << "Transform is valid? " << [OpenCVWrapper _validateHomographyWithBox:homography] << endl;
 
     return homography;
 }
 
 + (bool)_validateHomography:(Mat)h {
     return CppHelpers::validateHomography(h);
+}
+
++ (bool)_validateHomographyWithBox:(Mat)h {
+    vector<Point2f> corners(4);
+    corners[0] = cv::Point(0,0);
+    corners[1] = cv::Point(0,1);
+    corners[2] = cv::Point(1,0);
+    corners[3] = cv::Point(1,1);
+    vector<Point2f> transformed(4);
+    cv::perspectiveTransform(corners, transformed, h);
+    cout << "Transformed " << transformed << endl;
+    return (transformed[0].x < transformed[2].x) && (transformed[0].y < transformed[1].y);
 }
 
 + (simd_float3x3)_convert3x3:(Mat)h {
