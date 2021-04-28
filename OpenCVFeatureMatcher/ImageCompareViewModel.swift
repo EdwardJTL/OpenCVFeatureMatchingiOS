@@ -11,11 +11,14 @@ import Foundation
 import SwiftUI
 
 private func computeMatchedImages(_ image1: UIImage, _ image2: UIImage) -> UIImage {
-    return OpenCVWrapper.toMatchedImageKNN(image1, and: image2)
+    let start = Date()
+    let result = OpenCVWrapper.toMatchedImageKNN(image1, and: image2)
+    print(Date().timeIntervalSince(start))
+    return result
 }
 
 private func computerHomography(_ image1: UIImage, _ image2: UIImage) -> simd_float3x3{
-    return OpenCVWrapper.computeHomography(image1, to: image2)
+    return OpenCVWrapper.computeHomographyKNNKaze(image1, to: image2)
 }
 
 class ImageCompareViewModel: ObservableObject {
@@ -38,16 +41,16 @@ class ImageCompareViewModel: ObservableObject {
             }
             .receive(on: DispatchQueue.main)
             .assign(to: &$processedResult)
-//        Publishers.CombineLatest($sourceImage1.dropFirst(), $sourceImage2.dropFirst())
-//            .receive(on: DispatchQueue.global(qos: .utility))
-//            .map { image1, image2 -> simd_float3x3 in
-//                computerHomography(image1, image2)
-//            }
-//            .map { matrix -> String in
-//                "\(matrix.columns.0.x)"
-//            }
-//            .receive(on: DispatchQueue.main)
-//            .assign(to: &$homographyString)
+        Publishers.CombineLatest($sourceImage1.dropFirst(), $sourceImage2.dropFirst())
+            .receive(on: DispatchQueue.global(qos: .utility))
+            .map { image1, image2 -> simd_float3x3 in
+                computerHomography(image1, image2)
+            }
+            .map { matrix -> String in
+                "\(matrix.columns.0.x)"
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$homographyString)
 
         $sourceImage1
             .dropFirst()

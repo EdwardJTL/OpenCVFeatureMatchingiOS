@@ -46,7 +46,7 @@ using namespace cv;
     cout << "OpenCV: ";
     Mat trainGray = [OpenCVWrapper _matFrom:train];
     Mat queryGray = [OpenCVWrapper _matFrom:query];
-    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeaturesKNN:trainGray and:queryGray]];
+    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeaturesKNNKaze:trainGray and:queryGray]];
 }
 
 + (simd_float3x3)computeHomography:(UIImage *)train to:(UIImage *)query {
@@ -54,6 +54,14 @@ using namespace cv;
     Mat trainGray = [OpenCVWrapper _matFrom:train];
     Mat queryGray = [OpenCVWrapper _matFrom:query];
     Mat homography = [OpenCVWrapper _findHomography:trainGray to:queryGray];
+    return [OpenCVWrapper _convert3x3:homography];
+}
+
++ (simd_float3x3)computeHomographyKNNKaze:(UIImage *)train to:(UIImage *)query {
+    cout << "OpenCV: ";
+    Mat trainGray = [OpenCVWrapper _matFrom:train];
+    Mat queryGray = [OpenCVWrapper _matFrom:query];
+    Mat homography = [OpenCVWrapper _findHomographyKNNKaze:trainGray to:queryGray];
     return [OpenCVWrapper _convert3x3:homography];
 }
 
@@ -149,12 +157,13 @@ using namespace cv;
 }
 
 + (Mat)_compareFeaturesKNN:(Mat) image and:(Mat)image2 {
+    auto start = std::chrono::high_resolution_clock::now();
     cout << "-> Compare keypoints knn ->";
-    cv::Ptr<ORB> orb = ORB::create();
     vector<KeyPoint> keypoints1 = vector<KeyPoint>();
     Mat descriptors1;
     vector<KeyPoint> keypoints2 = vector<KeyPoint>();
     Mat descriptors2;
+    cv::Ptr<ORB> orb = ORB::create();
     orb->detectAndCompute(image, noArray(), keypoints1, descriptors1);
     orb->detectAndCompute(image2, noArray(), keypoints2, descriptors2);
     cout << " image 1 keypoints count " << keypoints1.size() << " ->";
@@ -176,8 +185,49 @@ using namespace cv;
             continue;
         }
     }
+    auto stop = std::chrono::high_resolution_clock::now();
+    cout << "time: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << " ";
     cout << " good matches count " << goodMatches.size() << " ->";
     sort(goodMatches.begin(), goodMatches.end(), CppHelpers::compareMatch);
+
+    Mat result;
+    cv::drawMatches(image, keypoints1, image2, keypoints2, goodMatches, result);
+    return result;
+}
+
++ (Mat)_compareFeaturesKNNKAZE:(Mat) image and:(Mat)image2 {
+    auto start = std::chrono::high_resolution_clock::now();
+    cout << "-> Compare keypoints knn ->";
+    vector<KeyPoint> keypoints1 = vector<KeyPoint>();
+    Mat descriptors1;
+    vector<KeyPoint> keypoints2 = vector<KeyPoint>();
+    Mat descriptors2;
+    cv::Ptr<AKAZE> kaze = AKAZE::create();
+    kaze->detectAndCompute(image, noArray(), keypoints1, descriptors1);
+    kaze->detectAndCompute(image2, noArray(), keypoints2, descriptors2);
+    cout << " image 1 keypoints count " << keypoints1.size() << " ->";
+    cout << " image 2 keypoints count " << keypoints2.size() << " ->";
+    cv::Ptr<BFMatcher> bf = cv::BFMatcher::create();
+    vector<vector<DMatch>> matches = vector<vector<DMatch>>();
+    bf->knnMatch(descriptors2, descriptors1, matches, 2);
+    cout << " matches count " << matches.size() << " ->";
+
+    vector<DMatch> goodMatches = vector<DMatch>();
+    for (vector<vector<DMatch>>::iterator match = matches.begin(); match != matches.end(); ++match) {
+        try {
+            DMatch match0 = match->at(0);
+            DMatch match1 = match->at(1);
+            if (match0.distance < RATIO * match1.distance) {
+                goodMatches.push_back(match0);
+            }
+        } catch (const std::out_of_range & ex) {
+            continue;
+        }
+    }
+    auto stop = std::chrono::high_resolution_clock::now();
+    cout << "time: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << " ";
+    cout << " good matches count " << goodMatches.size() << " ->";
+    goodMatches.resize(50);
 
     Mat result;
     cv::drawMatches(image, keypoints1, image2, keypoints2, goodMatches, result);
@@ -207,6 +257,56 @@ using namespace cv;
     for (size_t i = 0; i < matches.size(); i++) {
         points1.push_back(keypoints1[matches[i].trainIdx].pt);
         points2.push_back(keypoints2[matches[i].queryIdx].pt);
+    }
+
+    Mat homographyMask;
+    Mat homography = cv::findHomography(points1, points2, cv::RANSAC, 3, homographyMask);
+
+    cout << "Matrix H = " << endl << homography << endl << "Matrix is valid? " << [OpenCVWrapper _validateHomography:homography] << endl;
+
+    return homography;
+}
+
++ (Mat)_findHomographyKNNKaze:(Mat)image to:(Mat)image2 {
+    auto start = std::chrono::high_resolution_clock::now();
+    cout << "-> Compare keypoints knn ->";
+    vector<KeyPoint> keypoints1 = vector<KeyPoint>();
+    Mat descriptors1;
+    vector<KeyPoint> keypoints2 = vector<KeyPoint>();
+    Mat descriptors2;
+    cv::Ptr<AKAZE> kaze = AKAZE::create();
+    kaze->detectAndCompute(image, noArray(), keypoints1, descriptors1);
+    kaze->detectAndCompute(image2, noArray(), keypoints2, descriptors2);
+    cout << " image 1 keypoints count " << keypoints1.size() << " ->";
+    cout << " image 2 keypoints count " << keypoints2.size() << " ->";
+    cv::Ptr<BFMatcher> bf = cv::BFMatcher::create();
+    vector<vector<DMatch>> matches = vector<vector<DMatch>>();
+    bf->knnMatch(descriptors2, descriptors1, matches, 2);
+    cout << " matches count " << matches.size() << " ->";
+
+    vector<DMatch> goodMatches = vector<DMatch>();
+    for (vector<vector<DMatch>>::iterator match = matches.begin(); match != matches.end(); ++match) {
+        try {
+            DMatch match0 = match->at(0);
+            DMatch match1 = match->at(1);
+            if (match0.distance < RATIO * match1.distance) {
+                goodMatches.push_back(match0);
+            }
+        } catch (const std::out_of_range & ex) {
+            continue;
+        }
+    }
+    auto stop = std::chrono::high_resolution_clock::now();
+    cout << "time: " << chrono::duration_cast<chrono::microseconds>(stop - start).count() << " ";
+    cout << " good matches count " << goodMatches.size() << " ->";
+    goodMatches.resize(50);
+
+    vector<Point2f> points1 = vector<Point2f>();
+    vector<Point2f> points2 = vector<Point2f>();
+
+    for (size_t i = 0; i < goodMatches.size(); i++) {
+        points1.push_back(keypoints1[goodMatches[i].trainIdx].pt);
+        points2.push_back(keypoints2[goodMatches[i].queryIdx].pt);
     }
 
     Mat homographyMask;

@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)toMatchedImage:(UIImage *)train and:(UIImage *)query;
 + (UIImage *)toMatchedImageKNN:(UIImage *)train and:(UIImage *)query;
 + (simd_float3x3)computeHomography:(UIImage *)train to:(UIImage *)query;
++ (simd_float3x3)computeHomographyKNNKaze:(UIImage *)train to:(UIImage *)query;
 + (bool)validateHomography:(simd_float3x3)h;
 @end
 
