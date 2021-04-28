@@ -11,6 +11,8 @@
 
 #import "CppHelpers.hpp"
 
+#define RATIO 0.7
+
 using namespace std;
 
 using namespace cv;
@@ -40,11 +42,24 @@ using namespace cv;
     return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeatures:trainGray and:queryGray]];
 }
 
-+ (void)computeHomography:(UIImage *)train to:(UIImage *)query {
++ (UIImage *)toMatchedImageKNN:(UIImage *)train and:(UIImage *)query {
+    cout << "OpenCV: ";
+    Mat trainGray = [OpenCVWrapper _matFrom:train];
+    Mat queryGray = [OpenCVWrapper _matFrom:query];
+    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeaturesKNN:trainGray and:queryGray]];
+}
+
++ (simd_float3x3)computeHomography:(UIImage *)train to:(UIImage *)query {
     cout << "OpenCV: ";
     Mat trainGray = [OpenCVWrapper _matFrom:train];
     Mat queryGray = [OpenCVWrapper _matFrom:query];
     Mat homography = [OpenCVWrapper _findHomography:trainGray to:queryGray];
+    return [OpenCVWrapper _convert3x3:homography];
+}
+
++ (bool)validateHomography:(simd_float3x3)h {
+    Mat hMat = [OpenCVWrapper _matFromSimd:h];
+    return [OpenCVWrapper _validateHomography:hMat];
 }
 
 #pragma mark Private
@@ -133,6 +148,42 @@ using namespace cv;
     return result;
 }
 
++ (Mat)_compareFeaturesKNN:(Mat) image and:(Mat)image2 {
+    cout << "-> Compare keypoints knn ->";
+    cv::Ptr<ORB> orb = ORB::create();
+    vector<KeyPoint> keypoints1 = vector<KeyPoint>();
+    Mat descriptors1;
+    vector<KeyPoint> keypoints2 = vector<KeyPoint>();
+    Mat descriptors2;
+    orb->detectAndCompute(image, noArray(), keypoints1, descriptors1);
+    orb->detectAndCompute(image2, noArray(), keypoints2, descriptors2);
+    cout << " image 1 keypoints count " << keypoints1.size() << " ->";
+    cout << " image 2 keypoints count " << keypoints2.size() << " ->";
+    cv::Ptr<BFMatcher> bf = cv::BFMatcher::create();
+    vector<vector<DMatch>> matches = vector<vector<DMatch>>();
+    bf->knnMatch(descriptors2, descriptors1, matches, 2);
+    cout << " matches count " << matches.size() << " ->";
+
+    vector<DMatch> goodMatches = vector<DMatch>();
+    for (vector<vector<DMatch>>::iterator match = matches.begin(); match != matches.end(); ++match) {
+        try {
+            DMatch match0 = match->at(0);
+            DMatch match1 = match->at(1);
+            if (match0.distance < RATIO * match1.distance) {
+                goodMatches.push_back(match0);
+            }
+        } catch (const std::out_of_range & ex) {
+            continue;
+        }
+    }
+    cout << " good matches count " << goodMatches.size() << " ->";
+    sort(goodMatches.begin(), goodMatches.end(), CppHelpers::compareMatch);
+
+    Mat result;
+    cv::drawMatches(image, keypoints1, image2, keypoints2, goodMatches, result);
+    return result;
+}
+
 + (Mat)_findHomography:(Mat)image to:(Mat)image2 {
     cout << "-> find homography ->";
     cv::Ptr<ORB> orb = ORB::create();
@@ -168,6 +219,21 @@ using namespace cv;
 
 + (bool)_validateHomography:(Mat)h {
     return CppHelpers::validateHomography(h);
+}
+
++ (simd_float3x3)_convert3x3:(Mat)h {
+    simd_float3 row0 = simd_make_float3(h.at<double>(0, 0), h.at<double>(0, 1), h.at<double>(0, 2));
+    simd_float3 row1 = simd_make_float3(h.at<double>(1, 0), h.at<double>(1, 1), h.at<double>(1, 2));
+    simd_float3 row2 = simd_make_float3(h.at<double>(2, 0), h.at<double>(2, 1), h.at<double>(2, 2));
+    return simd_matrix_from_rows(row0, row1, row2);
+}
+
++ (Mat)_matFromSimd:(simd_float3x3)simd {
+    Mat_<double> result(3,3);
+    result << simd.columns[0].x, simd.columns[0][1], simd.columns[0][2],
+                simd.columns[1][0], simd.columns[1][1], simd.columns[1][2],
+                simd.columns[2][0], simd.columns[2][1], simd.columns[2][2];
+    return std::move(result);
 }
 
 @end
