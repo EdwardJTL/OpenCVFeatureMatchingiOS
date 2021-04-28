@@ -46,7 +46,7 @@ using namespace cv;
     cout << "OpenCV: ";
     Mat trainGray = [OpenCVWrapper _matFrom:train];
     Mat queryGray = [OpenCVWrapper _matFrom:query];
-    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeaturesKNNKaze:trainGray and:queryGray]];
+    return [OpenCVWrapper _imageFrom:[OpenCVWrapper _compareFeaturesKNNKAZE:trainGray and:queryGray]];
 }
 
 + (simd_float3x3)computeHomography:(UIImage *)train to:(UIImage *)query {
